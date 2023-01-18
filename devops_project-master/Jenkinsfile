@@ -1,7 +1,7 @@
 pipeline {
     agent none
     environment {
-		DOCKERHUB_CREDENTIALS=credentials('dh_react')
+		DOCKERHUB_CREDENTIALS=credentials('arijabid')
 	}
     stages {
         stage('Init') {
