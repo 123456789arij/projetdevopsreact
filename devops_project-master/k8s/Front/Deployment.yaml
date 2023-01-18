@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: ELearningManagement - fontend-frontend
+spec:
+  selector:
+    matchLabels:
+      app: ELearningManagement - fontend-frontend
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ELearningManagement - fontend-frontend
+    spec:
+      containers:
+        - name: ELearningManagement - fontend-frontend
+          image: arijabid/frontend:2
+          ports:
+            - containerPort: 80
