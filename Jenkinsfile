@@ -1,23 +1,31 @@
 pipeline {
     agent none
     environment {
-		DOCKERHUB_CREDENTIALS=credentials('arijabid')
-	}
-    stages {
-        stage('Init') {
-            agent any
-      steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
+        DOCKERHUB_CREDENTIALS = credentials('dh_nest')
     }
+    stages {
+         stage('Checkout'){
+            agent any
+            steps{
+                //Changez avec votre lien github
+                git branch: 'master', url: 'https://github.com/123456789arij/projetdevopsreact.git'
+            }
+        }
+        stage('Init'){
+            agent any
+            steps{
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
         stage('Build nest') {
             agent any
             
             steps {
                 dir('nest'){
-                    sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/nest:$BUILD_ID .'
-                    sh 'docker push $DOCKERHUB_CREDENTIALS_USR/nest:$BUILD_ID'
-                    sh 'docker rmi $DOCKERHUB_CREDENTIALS_USR/nest:$BUILD_ID'
+                    sh 'docker build -t arijabid/nest:$BUILD_ID .'
+                    sh 'docker push arijabid/nest:$BUILD_ID'
+                    sh 'docker rmi arijabid/nest:$BUILD_ID'
                 }
             }
         }
@@ -26,9 +34,9 @@ pipeline {
           
             steps {
                 dir('react'){
-                    sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/react:$BUILD_ID .'
-                    sh 'docker push $DOCKERHUB_CREDENTIALS_USR/react:$BUILD_ID'
-                    sh 'docker rmi $DOCKERHUB_CREDENTIALS_USR/react:$BUILD_ID'
+                    sh 'docker build -t arijabid/react:$BUILD_ID .'
+                    sh 'docker push arijabid/react:$BUILD_ID'
+                    sh 'docker rmi arijabid/react:$BUILD_ID'
                 }
             }
         }
